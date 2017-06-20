@@ -1,0 +1,19 @@
+{
+  "name": "react-component-update",
+  "version": "1.0.0",
+  "description": "Extends the native React Component to streamline updates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wimpyprogrammer/react-component-update.git"
+  },
+  "author": "Drew Keller <drew@wimpyprogrammer.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wimpyprogrammer/react-component-update/issues"
+  },
+  "homepage": "https://github.com/wimpyprogrammer/react-component-update#readme"
+}
