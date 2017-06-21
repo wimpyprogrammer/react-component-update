@@ -1,0 +1,9 @@
+{
+	"root": true,
+	"extends": "airbnb",
+	"rules": {
+		"indent": ["error", "tab"],
+		"linebreak-style": ["error", "unix"],
+		"no-tabs": "off"
+	}
+}
