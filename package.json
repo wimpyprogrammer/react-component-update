@@ -17,6 +17,9 @@
     "url": "https://github.com/wimpyprogrammer/react-component-update/issues"
   },
   "homepage": "https://github.com/wimpyprogrammer/react-component-update#readme",
+  "dependencies": {
+    "react": "*"
+  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
