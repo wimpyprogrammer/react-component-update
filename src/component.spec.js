@@ -1,11 +1,14 @@
 /* eslint-env jest */
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import dirtyChai from 'dirty-chai';
 import { mount } from 'enzyme';
 import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
 
 import Component from './component';
+
+chai.use(dirtyChai);
 
 function getUniqueState() {
 	return { [uniqueId('stateVarName')]: uniqueId('stateVarValue') };
@@ -40,7 +43,7 @@ describe('Component extension', () => {
 	describe('componentWillMountOrReceiveProps()', () => {
 		it('runs once on mount', () => {
 			mount(<TestComponent />);
-			expect(callbackWill.calledOnce).to.be.true;
+			expect(callbackWill.calledOnce).to.be.true();
 		});
 
 		it('runs on mount with first parameter of component props', () => {
@@ -50,19 +53,19 @@ describe('Component extension', () => {
 
 		it('runs on mount before render()', () => {
 			mount(<TestComponent />);
-			expect(callbackWill.calledBefore(callbackRender)).to.be.true;
+			expect(callbackWill.calledBefore(callbackRender)).to.be.true();
 		});
 
 		it('runs on props update', () => {
 			const component = mount(<TestComponent />);
 			component.setProps(getUniqueProps());
-			expect(callbackWill.calledTwice).to.be.true;
+			expect(callbackWill.calledTwice).to.be.true();
 		});
 
 		it('runs on props update when no props change', () => {
 			const component = mount(<TestComponent {...getUniqueProps()} />);
 			component.setProps(component.props());
-			expect(callbackWill.calledTwice).to.be.true;
+			expect(callbackWill.calledTwice).to.be.true();
 		});
 
 		it('runs on props update with first parameter of component props', () => {
@@ -74,20 +77,20 @@ describe('Component extension', () => {
 		it('runs on props update before render()', () => {
 			const component = mount(<TestComponent />);
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall.calledBefore(callbackRender.secondCall)).to.be.true;
+			expect(callbackWill.secondCall.calledBefore(callbackRender.secondCall)).to.be.true();
 		});
 
 		it('does not run on state update', () => {
 			const component = mount(<TestComponent />);
 			component.setState(getUniqueState());
-			expect(callbackWill.calledOnce).to.be.true;
+			expect(callbackWill.calledOnce).to.be.true();
 		});
 	});
 
 	describe('componentDidMountOrUpdate()', () => {
 		it('runs once when mounted', () => {
 			mount(<TestComponent />);
-			expect(callbackDid.calledOnce).to.be.true;
+			expect(callbackDid.calledOnce).to.be.true();
 		});
 
 		it('runs on mount with first parameter of component props', () => {
@@ -102,19 +105,19 @@ describe('Component extension', () => {
 
 		it('runs after render()', () => {
 			mount(<TestComponent />);
-			expect(callbackDid.calledAfter(callbackRender)).to.be.true;
+			expect(callbackDid.calledAfter(callbackRender)).to.be.true();
 		});
 
 		it('runs on props update', () => {
 			const component = mount(<TestComponent />);
 			component.setProps(getUniqueProps());
-			expect(callbackDid.calledTwice).to.be.true;
+			expect(callbackDid.calledTwice).to.be.true();
 		});
 
 		it('runs on props update when no props change', () => {
 			const component = mount(<TestComponent {...getUniqueProps()} />);
 			component.setProps(component.props());
-			expect(callbackDid.calledTwice).to.be.true;
+			expect(callbackDid.calledTwice).to.be.true();
 		});
 
 		it('runs on props update with first parameter of previous component props', () => {
@@ -134,13 +137,13 @@ describe('Component extension', () => {
 		it('runs on state update', () => {
 			const component = mount(<TestComponent />);
 			component.setState(getUniqueState());
-			expect(callbackDid.calledTwice).to.be.true;
+			expect(callbackDid.calledTwice).to.be.true();
 		});
 
 		it('runs on state update when no state changes', () => {
 			const component = mount(<TestComponent />);
 			component.setState(component.state());
-			expect(callbackDid.calledTwice).to.be.true;
+			expect(callbackDid.calledTwice).to.be.true();
 		});
 
 		it('runs on state update with first parameter of previous component props', () => {
@@ -160,7 +163,7 @@ describe('Component extension', () => {
 		it('runs on props update before render()', () => {
 			const component = mount(<TestComponent />);
 			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall.calledAfter(callbackRender.secondCall)).to.be.true;
+			expect(callbackDid.secondCall.calledAfter(callbackRender.secondCall)).to.be.true();
 		});
 	});
 });
