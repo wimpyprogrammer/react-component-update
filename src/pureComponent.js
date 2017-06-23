@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars, class-methods-use-this */
-import { Component } from 'react';
+import { PureComponent } from 'react';
 
-class ReactComponentUpdate extends Component {
+class ReactPureComponentUpdate extends PureComponent {
 	componentWillMount() {
 		this.componentWillMountOrReceiveProps(this.props);
 	}
@@ -23,4 +23,4 @@ class ReactComponentUpdate extends Component {
 	componentDidMountOrUpdate(prevProps, prevState) {}
 }
 
-export default ReactComponentUpdate;
+export default ReactPureComponentUpdate;
