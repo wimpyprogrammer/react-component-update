@@ -6,7 +6,7 @@ import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
 
-import Component from './component';
+import PureComponent from './pureComponent';
 
 chai.use(dirtyChai);
 
@@ -18,8 +18,8 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
-describe('Component extension', () => {
-	class TestComponent extends Component {
+describe('PureComponent extension', () => {
+	class TestComponent extends PureComponent {
 		constructor(props) {
 			super(props);
 			this.state = getUniqueState();
@@ -114,12 +114,6 @@ describe('Component extension', () => {
 			expect(callbackDid.calledTwice).to.be.true();
 		});
 
-		it('runs on props update when no props change', () => {
-			const component = mount(<TestComponent {...getUniqueProps()} />);
-			component.setProps(component.props());
-			expect(callbackDid.calledTwice).to.be.true();
-		});
-
 		it('runs on props update with first parameter of previous component props', () => {
 			const component = mount(<TestComponent {...getUniqueProps()} />);
 			const initialProps = component.props();
@@ -137,12 +131,6 @@ describe('Component extension', () => {
 		it('runs on state update', () => {
 			const component = mount(<TestComponent />);
 			component.setState(getUniqueState());
-			expect(callbackDid.calledTwice).to.be.true();
-		});
-
-		it('runs on state update when no state changes', () => {
-			const component = mount(<TestComponent />);
-			component.setState(component.state());
 			expect(callbackDid.calledTwice).to.be.true();
 		});
 
