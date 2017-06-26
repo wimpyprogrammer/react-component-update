@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "node"
+  - "6"
+  - "4"
+env:
+  - REACT_VERSION=0
+  - REACT_VERSION=15
+  - REACT_VERSION=16
+  - REACT_VERSION=*
+install:
+  - npm install
+  - npm install react@$REACT_VERSION
+cache:
+  directories:
+    - "node_modules"
