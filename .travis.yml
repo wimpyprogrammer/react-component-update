@@ -6,7 +6,6 @@ node_js:
 env:
   - REACT_VERSION=0
   - REACT_VERSION=15
-  - REACT_VERSION=16
   - REACT_VERSION=*
 install:
   - npm install
