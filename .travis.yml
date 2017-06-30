@@ -9,7 +9,7 @@ env:
   - REACT_VERSION=*
 install:
   - npm install
-  - npm install react@$REACT_VERSION
+  - npm install react@$REACT_VERSION react-dom@REACT_VERSION
 cache:
   directories:
     - "node_modules"
