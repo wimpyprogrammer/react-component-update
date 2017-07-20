@@ -7,9 +7,7 @@ env:
   - REACT_VERSION=0
   - REACT_VERSION=15
   - REACT_VERSION=*
-install:
-  - npm install
-  - npm install react@$REACT_VERSION react-dom@$REACT_VERSION
+install: ./install-dependencies.sh
 cache:
   directories:
     - "node_modules"
