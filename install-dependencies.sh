@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ev
 
 echo "installing React $REACT_VERSION"
 
