@@ -8,6 +8,3 @@ env:
   - REACT_VERSION=15
   - REACT_VERSION=*
 install: ./install-dependencies.sh
-cache:
-  directories:
-    - "node_modules"
