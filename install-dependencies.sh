@@ -15,3 +15,5 @@ if [ ${REACT_VERSION} = "0" ]; then
 else
 	npm install --no-save react-test-renderer
 fi
+
+npm ls --depth=0
