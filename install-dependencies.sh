@@ -3,10 +3,10 @@ set -ev
 
 echo "installing React $REACT_VERSION"
 
-npm install
-
 rm -rf node_modules/.bin/npm node_modules/.bin/npm.cmd node_modules/react node_modules/react-dom node_modules/react-addons-test-utils node_modules/react-test-renderer
 npm prune
+
+npm install
 
 npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION
 
