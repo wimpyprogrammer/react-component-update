@@ -2,6 +2,9 @@
 set -ev
 
 echo "installing React $REACT_VERSION"
+echo "Travis Node Version $TRAVIS_NODE_VERSION"
+node --version
+npm --version
 
 rm -rf node_modules/.bin/npm node_modules/.bin/npm.cmd node_modules/react node_modules/react-dom node_modules/react-addons-test-utils node_modules/react-test-renderer
 npm prune
