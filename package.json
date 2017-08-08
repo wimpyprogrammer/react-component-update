@@ -32,6 +32,9 @@
     "jest": "^20.0.4",
     "lodash.uniqueid": "^4.0.1",
     "react": "*",
+    "react-addons-test-utils": "*",
+    "react-dom": "*",
+    "react-test-renderer": "*",
     "sinon": "^2.3.4"
   },
   "peerDependencies": {
