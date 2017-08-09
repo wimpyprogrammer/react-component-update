@@ -6,8 +6,6 @@ import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
 
-import PureComponent from './pureComponent';
-
 chai.use(dirtyChai);
 
 function getUniqueState() {
@@ -18,7 +16,12 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
-describe('PureComponent extension', () => {
+// Skip these tests if the current version of React does not define PureComponent.
+const descriptor = React.PureComponent ? describe : describe.skip;
+
+descriptor('PureComponent extension', () => {
+	const PureComponent = require('./pureComponent'); // eslint-disable-line global-require
+
 	class TestComponent extends PureComponent {
 		constructor(props) {
 			super(props);
