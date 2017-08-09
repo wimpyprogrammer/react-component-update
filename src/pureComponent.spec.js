@@ -20,7 +20,7 @@ function getUniqueProps() {
 const descriptor = React.PureComponent ? describe : describe.skip;
 
 descriptor('PureComponent extension', () => {
-	const PureComponent = require('./pureComponent'); // eslint-disable-line global-require
+	const { default: PureComponent } = require('./pureComponent'); // eslint-disable-line global-require
 
 	class TestComponent extends PureComponent {
 		constructor(props) {
