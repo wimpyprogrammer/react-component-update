@@ -3,7 +3,7 @@
 	"extends": "airbnb",
 	"rules": {
 		"indent": ["error", "tab"],
-		"linebreak-style": ["error", "unix"],
+		"linebreak-style": "off",
 		"no-tabs": "off",
 		"react/jsx-filename-extension": "off"
 	}
