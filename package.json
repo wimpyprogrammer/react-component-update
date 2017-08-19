@@ -17,7 +17,7 @@
     "url": "git+https://github.com/wimpyprogrammer/react-component-update.git"
   },
   "author": "Drew Keller <drew@wimpyprogrammer.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wimpyprogrammer/react-component-update/issues"
   },
