@@ -129,6 +129,9 @@ $RECYCLE.BIN/
 # Pre-transpiled source code
 src/
 
+# Tests
+*.spec.js
+
 # Vagrant development environment
 .vagrant/
 Vagrantfile
