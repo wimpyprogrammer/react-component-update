@@ -2,8 +2,10 @@
   "name": "react-component-update",
   "version": "1.0.0",
   "description": "Extends the native React Component to streamline updates",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "clean": "rimraf lib",
+    "build": "npm run clean && babel src --out-dir lib",
     "lint": "eslint ./",
     "test": "jest",
     "travisci": "npm run lint && jest && codecov",
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/wimpyprogrammer/react-component-update#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-jest": "^20.0.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -40,6 +43,7 @@
     "react-addons-test-utils": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
+    "rimraf": "^2.6.1",
     "sinon": "^2.3.4"
   },
   "peerDependencies": {
