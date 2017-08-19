@@ -2,7 +2,7 @@
   "name": "react-component-update",
   "version": "1.0.0",
   "description": "Extends the native React Component to streamline updates",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint ./",
     "test": "jest",
