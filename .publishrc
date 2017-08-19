@@ -9,6 +9,6 @@
   },
   "confirm": true,
   "publishTag": "latest",
-  "prePublishScript": "npm test",
+  "prePublishScript": "npm test && npm run build",
   "postPublishScript": false
 }

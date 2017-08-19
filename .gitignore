@@ -126,6 +126,10 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/node,macos,linux,windows
 
+# Transpiled build artifacts
+lib/
+
+# Vagrant development environment
 .vagrant/
 Vagrantfile
 puphpet/
