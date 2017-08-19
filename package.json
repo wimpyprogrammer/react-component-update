@@ -4,6 +4,7 @@
   "description": "Extends the native React Component to streamline updates",
   "main": "lib/index.js",
   "scripts": {
+    "clean": "rimraf lib",
     "build": "babel src --out-dir lib",
     "lint": "eslint ./",
     "test": "jest",
@@ -42,6 +43,7 @@
     "react-addons-test-utils": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
+    "rimraf": "^2.6.1",
     "sinon": "^2.3.4"
   },
   "peerDependencies": {
