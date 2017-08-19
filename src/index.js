@@ -1,5 +1,5 @@
-import Component from './src/component';
-import PureComponent from './src/pureComponent';
+import Component from './component';
+import PureComponent from './pureComponent';
 
 export default {
 	Component,
