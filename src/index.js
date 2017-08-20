@@ -1,7 +1,7 @@
 import Component from './component';
 import PureComponent from './pureComponent';
 
-export default {
+module.exports = {
 	Component,
 	PureComponent,
 };
