@@ -51,6 +51,11 @@ describe('Component extension', () => {
 			expect(callbackWill.firstCall.args[0]).to.equal(component.props());
 		});
 
+		it('runs on mount with "this" context of component', () => {
+			const component = mount(<TestComponent />);
+			expect(callbackWill.firstCall.thisValue).to.equal(component.getNode());
+		});
+
 		it('runs on mount before render()', () => {
 			mount(<TestComponent />);
 			expect(callbackWill.calledBefore(callbackRender)).to.be.true();
@@ -72,6 +77,12 @@ describe('Component extension', () => {
 			const component = mount(<TestComponent />);
 			component.setProps(getUniqueProps());
 			expect(callbackWill.secondCall.args[0]).to.equal(component.props());
+		});
+
+		it('runs on props update with "this" context of component', () => {
+			const component = mount(<TestComponent />);
+			component.setProps(getUniqueProps());
+			expect(callbackWill.secondCall.thisValue).to.equal(component.getNode());
 		});
 
 		it('runs on props update before render()', () => {
@@ -101,6 +112,11 @@ describe('Component extension', () => {
 		it('runs on mount with second parameter of component state', () => {
 			const component = mount(<TestComponent />);
 			expect(callbackDid.firstCall.args[1]).to.equal(component.state());
+		});
+
+		it('runs on mount with "this" context of component', () => {
+			const component = mount(<TestComponent />);
+			expect(callbackDid.firstCall.thisValue).to.equal(component.getNode());
 		});
 
 		it('runs after render()', () => {
@@ -134,6 +150,12 @@ describe('Component extension', () => {
 			expect(callbackDid.secondCall.args[1]).to.equal(initialState);
 		});
 
+		it('runs on props update with "this" context of component', () => {
+			const component = mount(<TestComponent />);
+			component.setProps(getUniqueProps());
+			expect(callbackDid.secondCall.thisValue).to.equal(component.getNode());
+		});
+
 		it('runs on state update', () => {
 			const component = mount(<TestComponent />);
 			component.setState(getUniqueState());
@@ -158,6 +180,12 @@ describe('Component extension', () => {
 			const initialState = component.state();
 			component.setState(getUniqueState());
 			expect(callbackDid.secondCall.args[1]).to.equal(initialState);
+		});
+
+		it('runs on state update with "this" context of component', () => {
+			const component = mount(<TestComponent />);
+			component.setState(getUniqueState());
+			expect(callbackDid.secondCall.thisValue).to.equal(component.getNode());
 		});
 
 		it('runs on props update before render()', () => {
