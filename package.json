@@ -53,6 +53,8 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "testMatch": ["**/src/*.spec.js?(x)"]
+    "testMatch": [
+      "**/src/*.spec.js?(x)"
+    ]
   }
 }
