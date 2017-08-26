@@ -44,7 +44,7 @@
     "react-dom": "*",
     "react-test-renderer": "*",
     "rimraf": "^2.6.1",
-    "sinon": "^2.3.4",
+    "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0"
   },
   "peerDependencies": {
