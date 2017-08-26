@@ -68,8 +68,8 @@ descriptor('PureComponent extension', () => {
 		});
 
 		it('runs on props update', () => {
-			const component = mount(<TestComponent />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponent />)
+				.setProps(getUniqueProps());
 			expect(callbackWill).to.have.been.calledTwice();
 		});
 
@@ -92,14 +92,14 @@ descriptor('PureComponent extension', () => {
 		});
 
 		it('runs on props update before render()', () => {
-			const component = mount(<TestComponent />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponent />)
+				.setProps(getUniqueProps());
 			expect(callbackWill.secondCall).to.have.been.calledBefore(callbackRender.secondCall);
 		});
 
 		it('does not run on state update', () => {
-			const component = mount(<TestComponent />);
-			component.setState(getUniqueState());
+			mount(<TestComponent />)
+				.setState(getUniqueState());
 			expect(callbackWill).to.have.been.calledOnce();
 		});
 	});
@@ -131,8 +131,8 @@ descriptor('PureComponent extension', () => {
 		});
 
 		it('runs on props update', () => {
-			const component = mount(<TestComponent />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponent />)
+				.setProps(getUniqueProps());
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
@@ -157,8 +157,8 @@ descriptor('PureComponent extension', () => {
 		});
 
 		it('runs on state update', () => {
-			const component = mount(<TestComponent />);
-			component.setState(getUniqueState());
+			mount(<TestComponent />)
+				.setState(getUniqueState());
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
@@ -183,8 +183,8 @@ descriptor('PureComponent extension', () => {
 		});
 
 		it('runs on props update before render()', () => {
-			const component = mount(<TestComponent />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponent />)
+				.setProps(getUniqueProps());
 			expect(callbackDid.secondCall).to.have.been.calledAfter(callbackRender.secondCall);
 		});
 	});
@@ -260,22 +260,22 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		});
 
 		it('runs on props update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithSuper />)
+				.setProps(getUniqueProps());
 			expect(callbackWill).to.have.been.calledTwice();
 		});
 
 		it('runs user code in override on props update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithSuper />)
+				.setProps(getUniqueProps());
 			sinon.assert.callOrder(
 				userComponentWillReceivePropsBefore, callbackWill, userComponentWillReceivePropsAfter,
 			);
 		});
 
 		it('does not run on state update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setState(getUniqueState());
+			mount(<TestComponentWithSuper />)
+				.setState(getUniqueState());
 			expect(callbackWill).to.have.been.calledOnce();
 		});
 	});
@@ -294,28 +294,28 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		});
 
 		it('runs on props update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithSuper />)
+				.setProps(getUniqueProps());
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
 		it('runs user code in override on props update', () => {
-			const component = mount(<TestComponentWithSuper {...getUniqueProps()} />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithSuper {...getUniqueProps()} />)
+				.setProps(getUniqueProps());
 			sinon.assert.callOrder(
 				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
 			);
 		});
 
 		it('runs on state update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setState(getUniqueState());
+			mount(<TestComponentWithSuper />)
+				.setState(getUniqueState());
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
 		it('runs user code in override on state update', () => {
-			const component = mount(<TestComponentWithSuper />);
-			component.setState(getUniqueState());
+			mount(<TestComponentWithSuper />)
+				.setState(getUniqueState());
 			sinon.assert.callOrder(
 				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
 			);
@@ -352,14 +352,14 @@ descriptor('Component extension with overrides not calling super()', () => {
 		});
 
 		it('does not run on props update', () => {
-			const component = mount(<TestComponentWithoutSuper />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithoutSuper />)
+				.setProps(getUniqueProps());
 			expect(callbackWill).not.to.have.been.called();
 		});
 
 		it('does not run on state update', () => {
-			const component = mount(<TestComponentWithoutSuper />);
-			component.setState(getUniqueState());
+			mount(<TestComponentWithoutSuper />)
+				.setState(getUniqueState());
 			expect(callbackWill).not.to.have.been.called();
 		});
 	});
@@ -371,14 +371,14 @@ descriptor('Component extension with overrides not calling super()', () => {
 		});
 
 		it('does not run on props update', () => {
-			const component = mount(<TestComponentWithoutSuper />);
-			component.setProps(getUniqueProps());
+			mount(<TestComponentWithoutSuper />)
+				.setProps(getUniqueProps());
 			expect(callbackDid).not.to.have.been.called();
 		});
 
 		it('does not run on state update', () => {
-			const component = mount(<TestComponentWithoutSuper />);
-			component.setState(getUniqueState());
+			mount(<TestComponentWithoutSuper />)
+				.setState(getUniqueState());
 			expect(callbackDid).not.to.have.been.called();
 		});
 	});
