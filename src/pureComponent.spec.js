@@ -11,6 +11,8 @@ import sinonChai from 'sinon-chai';
 chai.use(dirtyChai);
 chai.use(sinonChai);
 
+const sandbox = sinon.createSandbox();
+
 function getUniqueState() {
 	return { [uniqueId('stateVarName')]: uniqueId('stateVarValue') };
 }
@@ -36,15 +38,11 @@ descriptor('PureComponent extension', () => {
 		}
 	}
 
-	const callbackWill = sinon.spy(TestComponent.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sinon.spy(TestComponent.prototype, 'componentDidMountOrUpdate');
-	const callbackRender = sinon.spy(TestComponent.prototype, 'render');
+	const callbackWill = sandbox.spy(TestComponent.prototype, 'componentWillMountOrReceiveProps');
+	const callbackDid = sandbox.spy(TestComponent.prototype, 'componentDidMountOrUpdate');
+	const callbackRender = sandbox.spy(TestComponent.prototype, 'render');
 
-	afterEach(() => {
-		callbackWill.reset();
-		callbackDid.reset();
-		callbackRender.reset();
-	});
+	afterEach(() => sandbox.reset());
 
 	describe('componentWillMountOrReceiveProps()', () => {
 		it('runs once on mount', () => {
@@ -193,14 +191,14 @@ descriptor('PureComponent extension', () => {
 descriptor('PureComponent extension with overrides calling super()', () => {
 	const { PureComponent } = require('./'); // eslint-disable-line global-require
 
-	const userComponentWillMountBefore = sinon.spy();
-	const userComponentWillMountAfter = sinon.spy();
-	const userComponentDidMountBefore = sinon.spy();
-	const userComponentDidMountAfter = sinon.spy();
-	const userComponentWillReceivePropsBefore = sinon.spy();
-	const userComponentWillReceivePropsAfter = sinon.spy();
-	const userComponentDidUpdateBefore = sinon.spy();
-	const userComponentDidUpdateAfter = sinon.spy();
+	const userComponentWillMountBefore = sandbox.spy();
+	const userComponentWillMountAfter = sandbox.spy();
+	const userComponentDidMountBefore = sandbox.spy();
+	const userComponentDidMountAfter = sandbox.spy();
+	const userComponentWillReceivePropsBefore = sandbox.spy();
+	const userComponentWillReceivePropsAfter = sandbox.spy();
+	const userComponentDidUpdateBefore = sandbox.spy();
+	const userComponentDidUpdateAfter = sandbox.spy();
 
 	class TestComponentWithSuper extends PureComponent {
 		componentWillMount() {
@@ -232,19 +230,10 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		}
 	}
 
-	const callbackWill = sinon.spy(TestComponentWithSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sinon.spy(TestComponentWithSuper.prototype, 'componentDidMountOrUpdate');
+	const callbackWill = sandbox.spy(TestComponentWithSuper.prototype, 'componentWillMountOrReceiveProps');
+	const callbackDid = sandbox.spy(TestComponentWithSuper.prototype, 'componentDidMountOrUpdate');
 
-	afterEach(() => {
-		const allSpies = [
-			userComponentWillMountBefore, userComponentWillMountAfter,
-			userComponentDidMountBefore, userComponentDidMountAfter,
-			userComponentWillReceivePropsBefore, userComponentWillReceivePropsAfter,
-			userComponentDidUpdateBefore, userComponentDidUpdateAfter,
-			callbackWill, callbackDid,
-		];
-		allSpies.forEach(spy => spy.reset());
-	});
+	afterEach(() => sandbox.reset());
 
 	describe('componentWillMountOrReceiveProps()', () => {
 		it('runs once on mount', () => {
@@ -337,13 +326,10 @@ descriptor('Component extension with overrides not calling super()', () => {
 		}
 	}
 
-	const callbackWill = sinon.spy(TestComponentWithoutSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sinon.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
+	const callbackWill = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentWillMountOrReceiveProps');
+	const callbackDid = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
 
-	afterEach(() => {
-		callbackWill.reset();
-		callbackDid.reset();
-	});
+	afterEach(() => sandbox.reset());
 
 	describe('componentWillMountOrReceiveProps()', () => {
 		it('does not run on mount', () => {
