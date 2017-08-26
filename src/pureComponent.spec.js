@@ -322,3 +322,64 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		});
 	});
 });
+
+descriptor('Component extension with overrides not calling super()', () => {
+	const { default: PureComponent } = require('./pureComponent'); // eslint-disable-line global-require
+
+	class TestComponentWithoutSuper extends PureComponent {
+		componentWillMount() {}
+		componentDidMount() {}
+		componentWillReceiveProps() {}
+		componentDidUpdate() {}
+
+		render() {
+			return null;
+		}
+	}
+
+	const callbackWill = sinon.spy(TestComponentWithoutSuper.prototype, 'componentWillMountOrReceiveProps');
+	const callbackDid = sinon.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
+
+	afterEach(() => {
+		callbackWill.reset();
+		callbackDid.reset();
+	});
+
+	describe('componentWillMountOrReceiveProps()', () => {
+		it('does not run on mount', () => {
+			mount(<TestComponentWithoutSuper />);
+			expect(callbackWill).not.to.have.been.called();
+		});
+
+		it('does not run on props update', () => {
+			const component = mount(<TestComponentWithoutSuper />);
+			component.setProps(getUniqueProps());
+			expect(callbackWill).not.to.have.been.called();
+		});
+
+		it('does not run on state update', () => {
+			const component = mount(<TestComponentWithoutSuper />);
+			component.setState(getUniqueState());
+			expect(callbackWill).not.to.have.been.called();
+		});
+	});
+
+	describe('componentDidMountOrUpdate()', () => {
+		it('does not run when mounted', () => {
+			mount(<TestComponentWithoutSuper />);
+			expect(callbackDid).not.to.have.been.called();
+		});
+
+		it('does not run on props update', () => {
+			const component = mount(<TestComponentWithoutSuper />);
+			component.setProps(getUniqueProps());
+			expect(callbackDid).not.to.have.been.called();
+		});
+
+		it('does not run on state update', () => {
+			const component = mount(<TestComponentWithoutSuper />);
+			component.setState(getUniqueState());
+			expect(callbackDid).not.to.have.been.called();
+		});
+	});
+});
