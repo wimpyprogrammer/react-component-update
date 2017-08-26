@@ -23,7 +23,7 @@ function getUniqueProps() {
 const descriptor = React.PureComponent ? describe : describe.skip;
 
 descriptor('PureComponent extension', () => {
-	const { default: PureComponent } = require('./pureComponent'); // eslint-disable-line global-require
+	const { PureComponent } = require('./'); // eslint-disable-line global-require
 
 	class TestComponent extends PureComponent {
 		constructor(props) {
@@ -191,7 +191,7 @@ descriptor('PureComponent extension', () => {
 });
 
 descriptor('PureComponent extension with overrides calling super()', () => {
-	const { default: PureComponent } = require('./pureComponent'); // eslint-disable-line global-require
+	const { PureComponent } = require('./'); // eslint-disable-line global-require
 
 	const userComponentWillMountBefore = sinon.spy();
 	const userComponentWillMountAfter = sinon.spy();
@@ -324,7 +324,7 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 });
 
 descriptor('Component extension with overrides not calling super()', () => {
-	const { default: PureComponent } = require('./pureComponent'); // eslint-disable-line global-require
+	const { PureComponent } = require('./'); // eslint-disable-line global-require
 
 	class TestComponentWithoutSuper extends PureComponent {
 		componentWillMount() {}
