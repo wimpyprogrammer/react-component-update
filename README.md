@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/wimpyprogrammer/react-component-update.svg?branch=master)](https://travis-ci.org/wimpyprogrammer/react-component-update)
 [![codecov](https://codecov.io/gh/wimpyprogrammer/react-component-update/branch/master/graph/badge.svg)](https://codecov.io/gh/wimpyprogrammer/react-component-update)
 
-Extends the React `Component` and `PureComponent` classes with convenience lifecycle events.
+Adds convenience lifecycle events to your React components.
 
  - `componentWillMountOrReceiveProps(nextProps)` - Combines the [`componentWillMount()`](https://facebook.github.io/react/docs/react-component.html#componentwillmount) and [`componentWillReceiveProps(nextProps)`](https://facebook.github.io/react/docs/react-component.html#componentwillreceiveprops) events.  This allows you to consolidate all pre-`render()` logic.
  
@@ -22,6 +22,8 @@ yarn users:
 ```
 yarn add react-component-update
 ```
+
+`react-component-update` does not include its own version of React.  It will use whatever version is already installed in your project.
 
 ## Usage
 
@@ -55,6 +57,27 @@ Or to extend React's `PureComponent` class (available in React v15.3.0+):
 import { PureComponent } from 'react-component-update';
 ```
 
+For compatibility with [`create-react-class`](https://www.npmjs.com/package/create-react-class), use the `withEvents()` higher-order component.
+
+```js
+import createReactClass from 'create-react-class';
+import { withEvents } from 'react-component-update';
+
+const MyReactComponent = createReactClass(withEvents({
+	componentWillMountOrReceiveProps: function(nextProps) {
+		// Code that runs before every render().
+	},
+
+	componentDidMountOrUpdate: function(prevProps, prevState) {
+		// Code that runs after every render().
+	},
+
+	render: function() {
+		return <div />;
+	}
+}));
+```
+
 ## Mixing with your own lifecycle events
 
 `react-component-update` implements four lifecycle events of the React base classes:
@@ -63,7 +86,7 @@ import { PureComponent } from 'react-component-update';
  - `componentWillReceiveProps()`
  - `componentDidUpdate()`
 
-If you also implement these events in your component, you will need to call the corresponding `super()` method like so:
+If you extend `Component` or `PureComponent` from `react-component-update` and you also implement these events in your component, you will need to call the corresponding `super()` method like so:
 
 ```js
 componentWillMount() {
@@ -84,6 +107,8 @@ componentDidUpdate(prevProps, prevState) {
 ```
  
 The `super()` method can be called anywhere in your function to suit your needs.
+
+If you use the `withEvents()` higher-order component, you do not need to add any extra code to your events.  The new event (ex. `componentDidMountOrUpdate()`) will always run after the related built-in event (ex. `componentDidUpdate()`).
 
 ## License
 
