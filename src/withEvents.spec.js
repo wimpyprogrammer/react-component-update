@@ -1,14 +1,13 @@
 /* eslint-env jest */
-/* eslint-disable react/no-multi-comp */
 import chai, { expect } from 'chai';
+import createReactClass from 'create-react-class';
 import dirtyChai from 'dirty-chai';
 import { mount } from 'enzyme';
 import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-
-import Component from './component';
+import withEvents from './withEvents';
 
 chai.use(dirtyChai);
 chai.use(sinonChai);
@@ -24,20 +23,17 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
-describe('Component extension', () => {
-	class TestComponent extends Component {
-		constructor(props) {
-			super(props);
-			this.state = getUniqueState();
-		}
+describe('withEvents extension', () => {
+	const callbackWill = sandbox.spy();
+	const callbackDid = sandbox.spy();
 
-		render() {
-			return null;
-		}
-	}
+	const TestComponent = createReactClass(withEvents({
+		getInitialState: getUniqueState,
+		componentWillMountOrReceiveProps: callbackWill,
+		componentDidMountOrUpdate: callbackDid,
+		render: () => null,
+	}));
 
-	const callbackWill = sandbox.spy(TestComponent.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponent.prototype, 'componentDidMountOrUpdate');
 	const callbackRender = sandbox.spy(TestComponent.prototype, 'render');
 
 	beforeEach(() => {
@@ -120,11 +116,6 @@ describe('Component extension', () => {
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
-		it('runs on props update when no props change', () => {
-			component.setProps(component.props());
-			expect(callbackDid).to.have.been.calledTwice();
-		});
-
 		it('runs on props update with first parameter of previous component props', () => {
 			const initialProps = component.props();
 			component.setProps(getUniqueProps());
@@ -144,11 +135,6 @@ describe('Component extension', () => {
 
 		it('runs on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid).to.have.been.calledTwice();
-		});
-
-		it('runs on state update when no state changes', () => {
-			component.setState(component.state());
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
@@ -176,51 +162,28 @@ describe('Component extension', () => {
 	});
 });
 
-describe('Component extension with overrides calling super()', () => {
-	const userComponentWillMountBefore = sandbox.spy();
-	const userComponentWillMountAfter = sandbox.spy();
-	const userComponentDidMountBefore = sandbox.spy();
-	const userComponentDidMountAfter = sandbox.spy();
-	const userComponentWillReceivePropsBefore = sandbox.spy();
-	const userComponentWillReceivePropsAfter = sandbox.spy();
-	const userComponentDidUpdateBefore = sandbox.spy();
-	const userComponentDidUpdateAfter = sandbox.spy();
+describe('withEvents extension with overrides', () => {
+	const userComponentWillMount = sandbox.spy();
+	const userComponentDidMount = sandbox.spy();
+	const userComponentWillReceiveProps = sandbox.spy();
+	const userComponentDidUpdate = sandbox.spy();
 
-	class TestComponentWithSuper extends Component {
-		componentWillMount() {
-			userComponentWillMountBefore();
-			super.componentWillMount();
-			userComponentWillMountAfter();
-		}
+	const callbackWill = sandbox.spy();
+	const callbackDid = sandbox.spy();
 
-		componentDidMount() {
-			userComponentDidMountBefore();
-			super.componentDidMount();
-			userComponentDidMountAfter();
-		}
-
-		componentWillReceiveProps() {
-			userComponentWillReceivePropsBefore();
-			super.componentWillReceiveProps();
-			userComponentWillReceivePropsAfter();
-		}
-
-		componentDidUpdate() {
-			userComponentDidUpdateBefore();
-			super.componentDidUpdate();
-			userComponentDidUpdateAfter();
-		}
-
-		render() {
-			return null;
-		}
-	}
-
-	const callbackWill = sandbox.spy(TestComponentWithSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponentWithSuper.prototype, 'componentDidMountOrUpdate');
+	const TestComponentWithOverrides = createReactClass(withEvents({
+		getInitialState: getUniqueState,
+		componentWillMount: userComponentWillMount,
+		componentDidMount: userComponentDidMount,
+		componentWillReceiveProps: userComponentWillReceiveProps,
+		componentDidUpdate: userComponentDidUpdate,
+		componentWillMountOrReceiveProps: callbackWill,
+		componentDidMountOrUpdate: callbackDid,
+		render: () => null,
+	}));
 
 	beforeEach(() => {
-		component = mount(<TestComponentWithSuper {...getUniqueProps()} />);
+		component = mount(<TestComponentWithOverrides {...getUniqueProps()} />);
 	});
 
 	afterEach(() => sandbox.reset());
@@ -231,9 +194,7 @@ describe('Component extension with overrides calling super()', () => {
 		});
 
 		it('runs user code in override on mount', () => {
-			sinon.assert.callOrder(
-				userComponentWillMountBefore, callbackWill, userComponentWillMountAfter,
-			);
+			expect(userComponentWillMount).to.have.been.calledBefore(callbackWill);
 		});
 
 		it('runs on props update', () => {
@@ -243,9 +204,7 @@ describe('Component extension with overrides calling super()', () => {
 
 		it('runs user code in override on props update', () => {
 			component.setProps(getUniqueProps());
-			sinon.assert.callOrder(
-				userComponentWillReceivePropsBefore, callbackWill, userComponentWillReceivePropsAfter,
-			);
+			expect(userComponentWillReceiveProps).to.have.been.calledBefore(callbackWill.secondCall);
 		});
 
 		it('does not run on state update', () => {
@@ -260,9 +219,7 @@ describe('Component extension with overrides calling super()', () => {
 		});
 
 		it('runs user code in override on mount', () => {
-			sinon.assert.callOrder(
-				userComponentDidMountBefore, callbackDid, userComponentDidMountAfter,
-			);
+			expect(userComponentDidMount).to.have.been.calledBefore(callbackDid);
 		});
 
 		it('runs on props update', () => {
@@ -272,9 +229,7 @@ describe('Component extension with overrides calling super()', () => {
 
 		it('runs user code in override on props update', () => {
 			component.setProps(getUniqueProps());
-			sinon.assert.callOrder(
-				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
-			);
+			expect(userComponentDidUpdate).to.have.been.calledBefore(callbackDid.secondCall);
 		});
 
 		it('runs on state update', () => {
@@ -284,63 +239,7 @@ describe('Component extension with overrides calling super()', () => {
 
 		it('runs user code in override on state update', () => {
 			component.setState(getUniqueState());
-			sinon.assert.callOrder(
-				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
-			);
-		});
-	});
-});
-
-describe('Component extension with overrides not calling super()', () => {
-	class TestComponentWithoutSuper extends Component {
-		componentWillMount() {}
-		componentDidMount() {}
-		componentWillReceiveProps() {}
-		componentDidUpdate() {}
-
-		render() {
-			return null;
-		}
-	}
-
-	const callbackWill = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
-
-	beforeEach(() => {
-		component = mount(<TestComponentWithoutSuper />);
-	});
-
-	afterEach(() => sandbox.reset());
-
-	describe('componentWillMountOrReceiveProps()', () => {
-		it('does not run on mount', () => {
-			expect(callbackWill).not.to.have.been.called();
-		});
-
-		it('does not run on props update', () => {
-			component.setProps(getUniqueProps());
-			expect(callbackWill).not.to.have.been.called();
-		});
-
-		it('does not run on state update', () => {
-			component.setState(getUniqueState());
-			expect(callbackWill).not.to.have.been.called();
-		});
-	});
-
-	describe('componentDidMountOrUpdate()', () => {
-		it('does not run when mounted', () => {
-			expect(callbackDid).not.to.have.been.called();
-		});
-
-		it('does not run on props update', () => {
-			component.setProps(getUniqueProps());
-			expect(callbackDid).not.to.have.been.called();
-		});
-
-		it('does not run on state update', () => {
-			component.setState(getUniqueState());
-			expect(callbackDid).not.to.have.been.called();
+			expect(userComponentDidUpdate).to.have.been.calledBefore(callbackDid.secondCall);
 		});
 	});
 });
