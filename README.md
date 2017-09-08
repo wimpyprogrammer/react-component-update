@@ -23,6 +23,8 @@ yarn users:
 yarn add react-component-update
 ```
 
+`react-component-update` does not include its own version of React.  It will use whatever version is already installed in your project.
+
 ## Usage
 
 To extend React's `Component` class:
