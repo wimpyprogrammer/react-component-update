@@ -1,7 +1,12 @@
 #!/bin/bash
 set -ev
 
-echo "installing React $REACT_VERSION"
+REACT_VERSION_NORMALIZED=$REACT_VERSION
+if [ "${REACT_VERSION:0:2}" = "0." ]; then
+	REACT_VERSION_NORMALIZED=${REACT_VERSION:2}
+fi
+
+echo "installing React $REACT_VERSION ($REACT_VERSION_NORMALIZED)"
 echo "Travis Node Version $TRAVIS_NODE_VERSION"
 node --version
 npm --version
@@ -13,12 +18,12 @@ npm prune
 npm install
 
 # Conditionally install dependencies per https://github.com/airbnb/enzyme#installation
-if [ "${REACT_VERSION}" = "0.13" ]; then
-	npm install --no-save react@$REACT_VERSION
-elif [ "${REACT_VERSION:0:2}" = "0." ]; then
-	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-addons-test-utils@$REACT_VERSION
-else
-	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-test-renderer@$REACT_VERSION
+if [ "${REACT_VERSION_NORMALIZED}" = "13" ]; then
+	npm install --no-save react@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
+elif [ "${REACT_VERSION_NORMALIZED}" = "14" ]; then
+	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-addons-test-utils@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
+else # React 15+
+	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-test-renderer@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
 fi
 
 npm ls --depth=0
