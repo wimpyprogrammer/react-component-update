@@ -9,8 +9,6 @@ let Adapter;
 	try {
 		// eslint-disable-next-line import/no-dynamic-require
 		Adapter = require(`enzyme-adapter-react-${adapterVersion}`);
-		// eslint-disable-next-line no-console
-		console.log(`Using enzyme adapter ${adapterVersion}`);
 	} catch (ex) {
 		// Ignore failure, try the next version
 	}
