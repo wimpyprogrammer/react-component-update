@@ -11,11 +11,9 @@ echo "Travis Node Version $TRAVIS_NODE_VERSION"
 node --version
 npm --version
 
-npm uninstall --no-save react react-dom react-addons-test-utils react-test-renderer
-rm -rf node_modules/.bin/npm node_modules/.bin/npm.cmd node_modules/react node_modules/react-dom node_modules/react-addons-test-utils node_modules/react-test-renderer
+npm uninstall --no-save react react-dom react-addons-test-utils react-test-renderer enzyme-adapter-react-16
+rm -rf node_modules/.bin/npm node_modules/.bin/npm.cmd node_modules/react node_modules/react-dom node_modules/react-addons-test-utils node_modules/react-test-renderer node_modules/enzyme-adapter-react-16
 npm prune
-
-npm install
 
 # Conditionally install dependencies per https://github.com/airbnb/enzyme#installation
 if [ "${REACT_VERSION_NORMALIZED}" = "13" ]; then
