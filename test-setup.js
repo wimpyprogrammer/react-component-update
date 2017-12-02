@@ -1,5 +1,5 @@
 /* eslint-disable global-require, import/no-extraneous-dependencies, import/no-unresolved */
-const configure = require('enzyme').configure;
+const { configure } = require('enzyme');
 const reactVersion = require('react').version;
 
 const [majorReactVersion, minorReactVersion] = reactVersion.split('.');
