@@ -58,6 +58,9 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/!(*.spec).js"
+    ],
     "setupFiles": [
       "<rootDir>/test-shims.js",
       "<rootDir>/test-setup.js"
