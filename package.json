@@ -32,7 +32,8 @@
     "codecov": "^2.3.0",
     "create-react-class": "^15.6.0",
     "dirty-chai": "^2.0.0",
-    "enzyme": "^2.8.2",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",
@@ -42,7 +43,6 @@
     "lodash.uniqueid": "^4.0.1",
     "publish-please": "^2.3.1",
     "react": "*",
-    "react-addons-test-utils": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
     "rimraf": "^2.6.1",
@@ -55,6 +55,7 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
+    "setupTestFrameworkScriptFile": "<rootDir>/test-setup.js",
     "testMatch": [
       "**/src/*.spec.js?(x)"
     ]

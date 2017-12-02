@@ -56,7 +56,7 @@ describe('Component extension', () => {
 		});
 
 		it('runs on mount with "this" context of component', () => {
-			expect(callbackWill.firstCall).to.have.been.calledOn(component.getNode());
+			expect(callbackWill.firstCall).to.have.been.calledOn(component.instance());
 		});
 
 		it('runs on mount before render()', () => {
@@ -80,7 +80,7 @@ describe('Component extension', () => {
 
 		it('runs on props update with "this" context of component', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall).to.have.been.calledOn(component.getNode());
+			expect(callbackWill.secondCall).to.have.been.calledOn(component.instance());
 		});
 
 		it('runs on props update before render()', () => {
@@ -108,7 +108,7 @@ describe('Component extension', () => {
 		});
 
 		it('runs on mount with "this" context of component', () => {
-			expect(callbackDid.firstCall).to.have.been.calledOn(component.getNode());
+			expect(callbackDid.firstCall).to.have.been.calledOn(component.instance());
 		});
 
 		it('runs after render()', () => {
@@ -139,7 +139,7 @@ describe('Component extension', () => {
 
 		it('runs on props update with "this" context of component', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall).to.have.been.calledOn(component.getNode());
+			expect(callbackDid.secondCall).to.have.been.calledOn(component.instance());
 		});
 
 		it('runs on state update', () => {
@@ -166,7 +166,7 @@ describe('Component extension', () => {
 
 		it('runs on state update with "this" context of component', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid.secondCall).to.have.been.calledOn(component.getNode());
+			expect(callbackDid.secondCall).to.have.been.calledOn(component.instance());
 		});
 
 		it('runs on props update before render()', () => {
