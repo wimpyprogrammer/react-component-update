@@ -20,8 +20,10 @@ if [ "${REACT_VERSION_NORMALIZED}" = "13" ]; then
 	npm install --no-save react@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
 elif [ "${REACT_VERSION_NORMALIZED}" = "14" ]; then
 	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-addons-test-utils@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
-else # React 15+
+elif [ "${REACT_VERSION_NORMALIZED}" = "15" ]; then
 	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION react-test-renderer@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
+else # React 16+
+	npm install --no-save react@$REACT_VERSION react-dom@$REACT_VERSION enzyme-adapter-react-$REACT_VERSION_NORMALIZED
 fi
 
 npm ls --depth=0
