@@ -227,7 +227,9 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 
 		it('runs user code in override on mount', () => {
 			sinon.assert.callOrder(
-				userComponentWillMountBefore, callbackWill, userComponentWillMountAfter,
+				userComponentWillMountBefore,
+				callbackWill,
+				userComponentWillMountAfter,
 			);
 		});
 
@@ -239,7 +241,9 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		it('runs user code in override on props update', () => {
 			component.setProps(getUniqueProps());
 			sinon.assert.callOrder(
-				userComponentWillReceivePropsBefore, callbackWill, userComponentWillReceivePropsAfter,
+				userComponentWillReceivePropsBefore,
+				callbackWill,
+				userComponentWillReceivePropsAfter,
 			);
 		});
 
@@ -256,7 +260,9 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 
 		it('runs user code in override on mount', () => {
 			sinon.assert.callOrder(
-				userComponentDidMountBefore, callbackDid, userComponentDidMountAfter,
+				userComponentDidMountBefore,
+				callbackDid,
+				userComponentDidMountAfter,
 			);
 		});
 
@@ -268,7 +274,9 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		it('runs user code in override on props update', () => {
 			component.setProps(getUniqueProps());
 			sinon.assert.callOrder(
-				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
+				userComponentDidUpdateBefore,
+				callbackDid,
+				userComponentDidUpdateAfter,
 			);
 		});
 
@@ -280,7 +288,9 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		it('runs user code in override on state update', () => {
 			component.setState(getUniqueState());
 			sinon.assert.callOrder(
-				userComponentDidUpdateBefore, callbackDid, userComponentDidUpdateAfter,
+				userComponentDidUpdateBefore,
+				callbackDid,
+				userComponentDidUpdateAfter,
 			);
 		});
 	});
