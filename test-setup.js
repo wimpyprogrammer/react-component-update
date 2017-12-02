@@ -1,17 +1,11 @@
 /* eslint-disable global-require, import/no-extraneous-dependencies, import/no-unresolved */
 const configure = require('enzyme').configure;
+const reactVersion = require('react').version;
 
-let Adapter;
+const [majorReactVersion, minorReactVersion] = reactVersion.split('.');
+const adapterVersion = (majorReactVersion !== '0') ? majorReactVersion : minorReactVersion;
 
-[16, 15, 14, 13].forEach((adapterVersion) => {
-	if (Adapter) return;
-
-	try {
-		// eslint-disable-next-line import/no-dynamic-require
-		Adapter = require(`enzyme-adapter-react-${adapterVersion}`);
-	} catch (ex) {
-		// Ignore failure, try the next version
-	}
-});
+// eslint-disable-next-line import/no-dynamic-require
+const Adapter = require(`enzyme-adapter-react-${adapterVersion}`);
 
 configure({ adapter: new Adapter() });
