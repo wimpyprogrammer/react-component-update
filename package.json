@@ -55,7 +55,10 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "setupTestFrameworkScriptFile": "<rootDir>/test-setup.js",
+    "setupFiles": [
+      "<rootDir>/test-shims.js",
+      "<rootDir>/test-setup.js"
+    ],
     "testMatch": [
       "**/src/*.spec.js?(x)"
     ]
