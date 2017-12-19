@@ -4,7 +4,6 @@ node_js:
   - "8"
   - "7"
   - "6"
-  - "4"
 env:
   - REACT_VERSION=0.13
   - REACT_VERSION=0.14
