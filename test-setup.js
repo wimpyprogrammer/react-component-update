@@ -1,11 +1,4 @@
-/* eslint-disable global-require, import/no-extraneous-dependencies, import/no-unresolved */
-const { configure } = require('enzyme');
-const reactVersion = require('react').version;
+/* eslint-env mocha */
+import configure from 'enzyme-adapter-react-helper';
 
-const [majorReactVersion, minorReactVersion] = reactVersion.split('.');
-const adapterVersion = (majorReactVersion !== '0') ? majorReactVersion : minorReactVersion;
-
-// eslint-disable-next-line import/no-dynamic-require
-const Adapter = require(`enzyme-adapter-react-${adapterVersion}`);
-
-configure({ adapter: new Adapter() });
+configure();
