@@ -9,9 +9,10 @@
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && babel src --out-dir lib",
+    "install-react": "enzyme-adapter-react-install 16",
     "lint": "eslint ./",
     "test": "jest",
-    "travisci": "npm run lint && jest && codecov",
+    "travisci": "npm run install-react && npm run lint && npm run test && codecov",
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
