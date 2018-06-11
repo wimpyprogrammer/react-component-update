@@ -49,7 +49,7 @@
     "react-dom": "*",
     "react-test-renderer": "*",
     "rimraf": "^2.6.1",
-    "sinon": "^5.0.0",
+    "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0"
   },
   "peerDependencies": {
