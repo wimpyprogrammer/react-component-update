@@ -300,10 +300,13 @@ descriptor('Component extension with overrides not calling super()', () => {
 	const { PureComponent } = require('./'); // eslint-disable-line global-require
 
 	class TestComponentWithoutSuper extends PureComponent {
-		componentWillMount() {}
-		componentDidMount() {}
-		componentWillReceiveProps() {}
-		componentDidUpdate() {}
+		componentWillMount() { }
+
+		componentDidMount() { }
+
+		componentWillReceiveProps() { }
+
+		componentDidUpdate() { }
 
 		render() {
 			return null;

@@ -303,10 +303,13 @@ describe('Component extension with overrides calling super()', () => {
 
 describe('Component extension with overrides not calling super()', () => {
 	class TestComponentWithoutSuper extends Component {
-		componentWillMount() {}
-		componentDidMount() {}
-		componentWillReceiveProps() {}
-		componentDidUpdate() {}
+		componentWillMount() { }
+
+		componentDidMount() { }
+
+		componentWillReceiveProps() { }
+
+		componentDidUpdate() { }
 
 		render() {
 			return null;
