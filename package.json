@@ -35,7 +35,7 @@
     "codecov": "^3.0.0",
     "create-react-class": "^15.6.0",
     "dirty-chai": "^2.0.0",
-    "enzyme": "^3.1.0",
+    "enzyme": "^3.4.4",
     "enzyme-adapter-react-16": "^1.0.1",
     "eslint": "^5.0.1",
     "eslint-config-airbnb": "^17.0.0",
