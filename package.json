@@ -9,9 +9,10 @@
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && babel src --out-dir lib",
+    "install-react": "enzyme-adapter-react-install 16",
     "lint": "eslint ./",
     "test": "jest",
-    "travisci": "npm run lint && jest && codecov",
+    "travisci": "npm run install-react && npm run lint && npm run test && codecov",
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
@@ -37,6 +38,7 @@
     "dirty-chai": "^2.0.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.1",
+    "enzyme-adapter-react-helper": "^1.2.2",
     "eslint": "^5.0.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.13.0",
