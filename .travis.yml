@@ -1,16 +1,12 @@
 language: node_js
 node_js:
   - "node"
-  - "8"
-  - "7"
   - "6"
 env:
-  - REACT_VERSION=0.13
-  - REACT_VERSION=0.14
-  - REACT_VERSION=15
-  - REACT_VERSION=16
-before_script:
-  - ./install-dependencies.sh || echo "ignoring errors during setup"
+  - REACT=0.13
+  - REACT=0.14
+  - REACT=15
+  - REACT=16
 script:
   - npm run travisci
 cache:
