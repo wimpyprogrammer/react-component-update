@@ -9,3 +9,6 @@ env:
   - REACT=16
 script:
   - npm run travisci
+cache:
+  directories:
+    - node_modules
