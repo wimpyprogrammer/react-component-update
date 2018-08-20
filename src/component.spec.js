@@ -2,7 +2,7 @@
 /* eslint-disable react/no-multi-comp */
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
@@ -41,7 +41,7 @@ describe('Component extension', () => {
 	const callbackRender = sandbox.spy(TestComponent.prototype, 'render');
 
 	beforeEach(() => {
-		component = mount(<TestComponent {...getUniqueProps()} />);
+		component = shallow(<TestComponent {...getUniqueProps()} />);
 	});
 
 	afterEach(() => sandbox.reset());
@@ -52,7 +52,7 @@ describe('Component extension', () => {
 		});
 
 		it('runs on mount with first parameter of component props', () => {
-			expect(callbackWill.firstCall).to.have.been.calledWith(component.props());
+			expect(callbackWill.firstCall).to.have.been.calledWith(component.instance().props);
 		});
 
 		it('runs on mount with "this" context of component', () => {
@@ -69,13 +69,13 @@ describe('Component extension', () => {
 		});
 
 		it('runs on props update when no props change', () => {
-			component.setProps(component.props());
+			component.setProps(component.instance().props);
 			expect(callbackWill).to.have.been.calledTwice();
 		});
 
 		it('runs on props update with first parameter of component props', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall).to.have.been.calledWith(component.props());
+			expect(callbackWill.secondCall).to.have.been.calledWith(component.instance().props);
 		});
 
 		it('runs on props update with "this" context of component', () => {
@@ -100,7 +100,7 @@ describe('Component extension', () => {
 		});
 
 		it('runs on mount with first parameter of component props', () => {
-			expect(callbackDid.firstCall).to.have.been.calledWith(component.props());
+			expect(callbackDid.firstCall).to.have.been.calledWith(component.instance().props);
 		});
 
 		it('runs on mount with second parameter of component state', () => {
@@ -121,12 +121,12 @@ describe('Component extension', () => {
 		});
 
 		it('runs on props update when no props change', () => {
-			component.setProps(component.props());
+			component.setProps(component.instance().props);
 			expect(callbackDid).to.have.been.calledTwice();
 		});
 
 		it('runs on props update with first parameter of previous component props', () => {
-			const initialProps = component.props();
+			const initialProps = component.instance().props;
 			component.setProps(getUniqueProps());
 			expect(callbackDid.secondCall).to.have.been.calledWith(initialProps);
 		});
@@ -153,7 +153,7 @@ describe('Component extension', () => {
 		});
 
 		it('runs on state update with first parameter of previous component props', () => {
-			const initialProps = component.props();
+			const initialProps = component.instance().props;
 			component.setState(getUniqueState());
 			expect(callbackDid.secondCall).to.have.been.calledWith(initialProps);
 		});
@@ -220,7 +220,7 @@ describe('Component extension with overrides calling super()', () => {
 	const callbackDid = sandbox.spy(TestComponentWithSuper.prototype, 'componentDidMountOrUpdate');
 
 	beforeEach(() => {
-		component = mount(<TestComponentWithSuper {...getUniqueProps()} />);
+		component = shallow(<TestComponentWithSuper {...getUniqueProps()} />);
 	});
 
 	afterEach(() => sandbox.reset());
@@ -320,7 +320,7 @@ describe('Component extension with overrides not calling super()', () => {
 	const callbackDid = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
 
 	beforeEach(() => {
-		component = mount(<TestComponentWithoutSuper />);
+		component = shallow(<TestComponentWithoutSuper />);
 	});
 
 	afterEach(() => sandbox.reset());
