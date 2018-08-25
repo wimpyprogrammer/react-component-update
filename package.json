@@ -40,7 +40,7 @@
     "create-react-class": "^15.6.0",
     "dirty-chai": "^2.0.0",
     "enzyme": "^3.4.4",
-    "enzyme-adapter-react-16": "^1.0.1",
+    "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-adapter-react-helper": "^1.2.2",
     "eslint": "^5.0.1",
     "eslint-config-airbnb": "^17.1.0",
