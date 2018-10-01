@@ -49,7 +49,7 @@
     "eslint-plugin-react": "^7.11.0",
     "jest": "^23.5.0",
     "lodash.uniqueid": "^4.0.1",
-    "publish-please": "^3.2.0",
+    "publish-please": "^4.0.0",
     "react": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
