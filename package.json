@@ -1,6 +1,6 @@
 {
   "name": "react-component-update",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Extends the native React Component to streamline updates",
   "main": "lib/index.js",
   "files": [
