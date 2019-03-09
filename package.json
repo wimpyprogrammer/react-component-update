@@ -73,8 +73,5 @@
     "testMatch": [
       "**/src/*.spec.js?(x)"
     ]
-  },
-  "dependencies": {
-    "lodash.wrap": "^4.1.1"
   }
 }
