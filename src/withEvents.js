@@ -4,25 +4,25 @@ function noop() {}
 
 export default function withEvents(config) {
 	function willMountCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc(...args);
+		const result = nativeFunc.call(this, ...args);
 		this.componentWillMountOrReceiveProps(this.props);
 		return result;
 	}
 
 	function didMountCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc(...args);
+		const result = nativeFunc.call(this, ...args);
 		this.componentDidMountOrUpdate(this.props, this.state);
 		return result;
 	}
 
 	function willReceivePropsCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc(...args);
+		const result = nativeFunc.call(this, ...args);
 		this.componentWillMountOrReceiveProps(...args);
 		return result;
 	}
 
 	function didUpdateCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc(...args);
+		const result = nativeFunc.call(this, ...args);
 		this.componentDidMountOrUpdate(...args);
 		return result;
 	}

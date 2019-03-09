@@ -197,6 +197,10 @@ describe('withEvents extension with overrides', () => {
 			expect(userComponentWillMount).to.have.been.calledBefore(callbackWill);
 		});
 
+		it('runs user code in override on mount with "this" context of component', () => {
+			expect(userComponentWillMount).to.have.been.calledOn(component.instance());
+		});
+
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
 			expect(callbackWill).to.have.been.calledTwice();
@@ -205,6 +209,11 @@ describe('withEvents extension with overrides', () => {
 		it('runs user code in override on props update', () => {
 			component.setProps(getUniqueProps());
 			expect(userComponentWillReceiveProps).to.have.been.calledBefore(callbackWill.secondCall);
+		});
+
+		it('runs user code in override on props update with "this" context of component', () => {
+			component.setProps(getUniqueProps());
+			expect(userComponentWillReceiveProps).to.have.been.calledOn(component.instance());
 		});
 
 		it('does not run on state update', () => {
@@ -222,6 +231,10 @@ describe('withEvents extension with overrides', () => {
 			expect(userComponentDidMount).to.have.been.calledBefore(callbackDid);
 		});
 
+		it('runs user code in override on mount with "this" context of component', () => {
+			expect(userComponentDidMount).to.have.been.calledOn(component.instance());
+		});
+
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
 			expect(callbackDid).to.have.been.calledTwice();
@@ -232,6 +245,11 @@ describe('withEvents extension with overrides', () => {
 			expect(userComponentDidUpdate).to.have.been.calledBefore(callbackDid.secondCall);
 		});
 
+		it('runs user code in override on props update with "this" context of component', () => {
+			component.setProps(getUniqueProps());
+			expect(userComponentDidUpdate).to.have.been.calledOn(component.instance());
+		});
+
 		it('runs on state update', () => {
 			component.setState(getUniqueState());
 			expect(callbackDid).to.have.been.calledTwice();
@@ -240,6 +258,11 @@ describe('withEvents extension with overrides', () => {
 		it('runs user code in override on state update', () => {
 			component.setState(getUniqueState());
 			expect(userComponentDidUpdate).to.have.been.calledBefore(callbackDid.secondCall);
+		});
+
+		it('runs user code in override on state update with "this" context of component', () => {
+			component.setState(getUniqueState());
+			expect(userComponentDidUpdate).to.have.been.calledOn(component.instance());
 		});
 	});
 });
