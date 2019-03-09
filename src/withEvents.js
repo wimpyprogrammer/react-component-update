@@ -1,28 +1,37 @@
-import wrap from 'lodash.wrap';
-
 function noop() {}
 
+/**
+ * Intercept calls to nativeFunc and pass the arguments to customWrapperFunc.
+ * @param {function=} nativeFunc
+ * @param {function} customWrapperFunc
+ */
+function wrap(nativeFunc = noop, customWrapperFunc) {
+	return function wrappedNativeFunc(...args) {
+		customWrapperFunc.call(this, nativeFunc.bind(this), ...args);
+	};
+}
+
 export default function withEvents(config) {
-	function willMountCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc.call(this, ...args);
+	function willMountCustom(nativeFunc, ...args) {
+		const result = nativeFunc(...args);
 		this.componentWillMountOrReceiveProps(this.props);
 		return result;
 	}
 
-	function didMountCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc.call(this, ...args);
+	function didMountCustom(nativeFunc, ...args) {
+		const result = nativeFunc(...args);
 		this.componentDidMountOrUpdate(this.props, this.state);
 		return result;
 	}
 
-	function willReceivePropsCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc.call(this, ...args);
+	function willReceivePropsCustom(nativeFunc, ...args) {
+		const result = nativeFunc(...args);
 		this.componentWillMountOrReceiveProps(...args);
 		return result;
 	}
 
-	function didUpdateCustom(nativeFunc = noop, ...args) {
-		const result = nativeFunc.call(this, ...args);
+	function didUpdateCustom(nativeFunc, ...args) {
+		const result = nativeFunc(...args);
 		this.componentDidMountOrUpdate(...args);
 		return result;
 	}
