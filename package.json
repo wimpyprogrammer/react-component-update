@@ -18,7 +18,8 @@
     "test": "jest",
     "travisci": "npm run install-react && npm run lint && npm run test && codecov",
     "publish-please": "publish-please",
-    "prepublish": "publish-please guard"
+    "prepublish": "npm run snyk-protect; publish-please guard",
+    "snyk-protect": "snyk protect"
   },
   "repository": {
     "type": "git",
@@ -74,5 +75,9 @@
     "testMatch": [
       "**/src/*.spec.js?(x)"
     ]
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.193.0"
   }
 }
