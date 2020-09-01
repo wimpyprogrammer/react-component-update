@@ -5,6 +5,19 @@
 		"indent": ["error", "tab"],
 		"linebreak-style": "off",
 		"no-tabs": "off",
-		"react/jsx-filename-extension": "off"
-	}
+		"react/jsx-filename-extension": "off",
+		"react/no-deprecated": "off"
+	},
+	"overrides": [
+		{
+			"files": ["**/*.spec.js"],
+			"env": {
+				"jest": true
+			},
+			"rules": {
+				"max-classes-per-file": "off",
+				"react/jsx-props-no-spreading": "off"
+			}
+		}
+	]
 }

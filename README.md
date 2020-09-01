@@ -5,7 +5,6 @@
 [![Build Status](https://travis-ci.org/wimpyprogrammer/react-component-update.svg?branch=master)](https://travis-ci.org/wimpyprogrammer/react-component-update)
 [![codecov](https://codecov.io/gh/wimpyprogrammer/react-component-update/branch/master/graph/badge.svg)](https://codecov.io/gh/wimpyprogrammer/react-component-update)
 [![Known Vulnerabilities](https://snyk.io/test/github/wimpyprogrammer/react-component-update/badge.svg)](https://snyk.io/test/github/wimpyprogrammer/react-component-update)
-[![Greenkeeper badge](https://badges.greenkeeper.io/wimpyprogrammer/react-component-update.svg)](https://greenkeeper.io/)
 
 Adds convenience lifecycle events to your React components.
 
