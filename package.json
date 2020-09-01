@@ -53,7 +53,7 @@
     "react": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
-    "rimraf": "^2.6.1",
+    "rimraf": "^3.0.2",
     "sinon": "^9.0.3",
     "sinon-chai": "^3.0.0"
   },
