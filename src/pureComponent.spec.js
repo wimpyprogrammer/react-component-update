@@ -1,5 +1,3 @@
-/* eslint-env jest */
-/* eslint-disable react/no-multi-comp */
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { shallow } from 'enzyme';
@@ -26,7 +24,7 @@ function getUniqueProps() {
 const descriptor = React.PureComponent ? describe : describe.skip;
 
 descriptor('PureComponent extension', () => {
-	const { PureComponent } = require('./'); // eslint-disable-line global-require
+	const { PureComponent } = require('.'); // eslint-disable-line global-require
 
 	class TestComponent extends PureComponent {
 		constructor(props) {
@@ -170,7 +168,7 @@ descriptor('PureComponent extension', () => {
 });
 
 descriptor('PureComponent extension with overrides calling super()', () => {
-	const { PureComponent } = require('./'); // eslint-disable-line global-require
+	const { PureComponent } = require('.'); // eslint-disable-line global-require
 
 	const userComponentWillMountBefore = sandbox.spy();
 	const userComponentWillMountAfter = sandbox.spy();
@@ -297,7 +295,7 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 });
 
 descriptor('Component extension with overrides not calling super()', () => {
-	const { PureComponent } = require('./'); // eslint-disable-line global-require
+	const { PureComponent } = require('.'); // eslint-disable-line global-require
 
 	class TestComponentWithoutSuper extends PureComponent {
 		componentWillMount() { }

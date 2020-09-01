@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import chai, { expect } from 'chai';
 import createReactClass from 'create-react-class';
 import dirtyChai from 'dirty-chai';

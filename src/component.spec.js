@@ -1,5 +1,3 @@
-/* eslint-env jest */
-/* eslint-disable react/no-multi-comp */
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { shallow } from 'enzyme';
