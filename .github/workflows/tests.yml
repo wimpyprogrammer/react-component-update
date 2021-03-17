@@ -1,0 +1,40 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # 07:34 on Saturdays
+    - cron: "34 7 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [10.x, 14.x]
+        react-version: [0.13, 0.14, 15, 16]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "2"
+
+      - name: Test on Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install
+      - run: npm run enzyme-adapter-react-install 16
+        env:
+          REACT: ${{ matrix.react-version }}
+      - run: npm run lint
+      - run: npm run test
