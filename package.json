@@ -13,10 +13,8 @@
     "clean": "rimraf lib",
     "build": "npm run clean && babel src --out-dir lib",
     "build-and-test": "npm run test && npm run build",
-    "install-react": "enzyme-adapter-react-install 16",
     "lint": "eslint ./ --report-unused-disable-directives",
     "test": "jest",
-    "travisci": "npm run install-react && npm run lint && npm run test && codecov",
     "prepublish": "npx publish-please guard",
     "publish-please": "npx publish-please"
   },
