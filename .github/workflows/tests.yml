@@ -33,7 +33,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: npm install
-      - run: npm run enzyme-adapter-react-install 16
+      - run: npx enzyme-adapter-react-install 16
         env:
           REACT: ${{ matrix.react-version }}
       - run: npm run lint
