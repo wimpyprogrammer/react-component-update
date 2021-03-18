@@ -2,7 +2,6 @@ import chai, { expect } from 'chai';
 import createReactClass from 'create-react-class';
 import dirtyChai from 'dirty-chai';
 import { shallow } from 'enzyme';
-import uniqueId from 'lodash.uniqueid';
 import React from 'react';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -13,6 +12,9 @@ chai.use(sinonChai);
 
 const sandbox = sinon.createSandbox();
 let component;
+
+let counter = 0;
+const uniqueId = (prefix) => prefix + counter++;
 
 function getUniqueState() {
 	return { [uniqueId('stateVarName')]: uniqueId('stateVarValue') };
