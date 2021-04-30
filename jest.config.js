@@ -1,12 +1,15 @@
 module.exports = {
+	clearMocks: true,
 	collectCoverageFrom: [
 		'src/**/!(*.spec).js',
 	],
 	collectCoverage: true,
-	setupFiles: [
+	setupFilesAfterEnv: [
 		'<rootDir>/test-shims.js',
 		'<rootDir>/test-setup.js',
+		'jest-extended',
 	],
+	testEnvironment: 'node',
 	testMatch: [
 		'**/src/*.spec.js?(x)',
 	],
