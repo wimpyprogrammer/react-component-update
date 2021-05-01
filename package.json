@@ -10,8 +10,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "build": "npm run clean && babel src --out-dir lib",
+    "build": "babel src --out-dir lib --delete-dir-on-start",
     "build-and-test": "npm run test && npm run build",
     "lint": "eslint ./ --report-unused-disable-directives",
     "test": "jest",
@@ -48,8 +47,7 @@
     "jest-extended": "^0.11.5",
     "react": "*",
     "react-dom": "*",
-    "react-test-renderer": "*",
-    "rimraf": "^3.0.2"
+    "react-test-renderer": "*"
   },
   "peerDependencies": {
     "react": "*"
