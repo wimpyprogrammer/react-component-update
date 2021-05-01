@@ -34,10 +34,8 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^26.3.0",
-    "chai": "^4.0.2",
     "codecov": "^3.0.0",
     "create-react-class": "^15.6.0",
-    "dirty-chai": "^2.0.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-adapter-react-helper": "^1.3.0",
@@ -51,9 +49,7 @@
     "react": "*",
     "react-dom": "*",
     "react-test-renderer": "*",
-    "rimraf": "^3.0.2",
-    "sinon": "^9.0.3",
-    "sinon-chai": "^3.0.0"
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "react": "*"
