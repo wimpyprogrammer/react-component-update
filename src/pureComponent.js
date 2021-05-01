@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars, class-methods-use-this */
-import { PureComponent } from 'react';
+import { Component, PureComponent } from 'react';
 
-class ReactPureComponentUpdate extends PureComponent {
+// Fallback to Component if the current version of React lacks PureComponent
+const BaseClass = PureComponent || Component;
+
+class ReactPureComponentUpdate extends BaseClass {
 	componentWillMount() {
 		this.componentWillMountOrReceiveProps(this.props);
 	}
