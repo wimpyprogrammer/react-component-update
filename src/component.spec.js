@@ -26,7 +26,7 @@ describe('Component extension', () => {
 
 	TestComponent.prototype.componentWillMountOrReceiveProps = jest.fn().mockReturnThis();
 	TestComponent.prototype.componentDidMountOrUpdate = jest.fn().mockReturnThis();
-	TestComponent.prototype.render = jest.fn().mockReturnThis();
+	TestComponent.prototype.render = jest.fn().mockReturnValue(null);
 
 	beforeEach(() => {
 		component = shallow(<TestComponent {...getUniqueProps()} />);
