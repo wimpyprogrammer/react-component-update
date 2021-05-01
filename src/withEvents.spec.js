@@ -15,6 +15,9 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
+// In React <16, context is an undocumented parameter passed to componentWillReceiveProps()
+const hasContextParameter = React.version.split('.')[0] < 16;
+
 describe('withEvents extension', () => {
 	let component;
 
@@ -64,7 +67,7 @@ describe('withEvents extension', () => {
 		it('runs on props update with first parameter of component props', () => {
 			component.setProps(getUniqueProps());
 
-			const context = {}; // undocumented parameter React passes to componentWillReceiveProps()
+			const context = {};
 			const { props } = component.instance();
 			expect(componentWillMountOrReceiveProps).toHaveBeenNthCalledWith(2, props, context);
 		});
@@ -120,7 +123,7 @@ describe('withEvents extension', () => {
 			const initialState = component.state();
 			component.setProps(getUniqueProps());
 
-			const context = {}; // undocumented parameter React passes to componentWillReceiveProps()
+			const context = hasContextParameter ? {} : undefined;
 			expect(componentDidMountOrUpdate)
 				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
 		});
@@ -142,9 +145,13 @@ describe('withEvents extension', () => {
 			const initialState = component.state();
 			component.setState(getUniqueState());
 
-			const context = {}; // undocumented parameter React passes to componentWillReceiveProps()
-			expect(componentDidMountOrUpdate)
-				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
+			if (hasContextParameter) {
+				expect(componentDidMountOrUpdate)
+					.toHaveBeenNthCalledWith(2, initialProps, initialState, {});
+			} else {
+				expect(componentDidMountOrUpdate)
+					.toHaveBeenNthCalledWith(2, initialProps, initialState);
+			}
 		});
 
 		it('runs on state update with "this" context of component', () => {
