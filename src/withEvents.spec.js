@@ -2,7 +2,7 @@ import createReactClass from 'create-react-class';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import withEvents from './withEvents';
+import { withEvents } from '.'; // eslint-disable-line import/named
 
 let counter = 0;
 const uniqueId = (prefix) => prefix + counter++;
