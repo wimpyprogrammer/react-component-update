@@ -1,16 +1,8 @@
-import chai, { expect } from 'chai';
-import dirtyChai from 'dirty-chai';
 import { shallow } from 'enzyme';
-import uniqueId from 'lodash.uniqueid';
 import React from 'react';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 
-chai.use(dirtyChai);
-chai.use(sinonChai);
-
-const sandbox = sinon.createSandbox();
-let component;
+let counter = 0;
+const uniqueId = (prefix) => prefix + counter++;
 
 function getUniqueState() {
 	return { [uniqueId('stateVarName')]: uniqueId('stateVarValue') };
@@ -20,164 +12,177 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
+// In React <16, context is an undocumented parameter that React passes to
+// componentWillReceiveProps() and componentDidUpdate()
+const hasContextParameter = React.version.split('.')[0] < 16;
+
 // Skip these tests if the current version of React does not define PureComponent.
 const descriptor = React.PureComponent ? describe : describe.skip;
 
 descriptor('PureComponent extension', () => {
 	const { PureComponent } = require('.'); // eslint-disable-line global-require
+	let component;
 
 	class TestComponent extends PureComponent {
 		constructor(props) {
 			super(props);
 			this.state = getUniqueState();
 		}
-
-		render() {
-			return null;
-		}
 	}
 
-	const callbackWill = sandbox.spy(TestComponent.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponent.prototype, 'componentDidMountOrUpdate');
-	const callbackRender = sandbox.spy(TestComponent.prototype, 'render');
+	TestComponent.prototype.componentWillMountOrReceiveProps = jest.fn().mockReturnThis();
+	TestComponent.prototype.componentDidMountOrUpdate = jest.fn().mockReturnThis();
+	TestComponent.prototype.render = jest.fn().mockReturnValue(null);
 
 	beforeEach(() => {
 		component = shallow(<TestComponent {...getUniqueProps()} />);
 	});
 
-	afterEach(() => sandbox.reset());
-
 	describe('componentWillMountOrReceiveProps()', () => {
+		const { componentWillMountOrReceiveProps, render } = TestComponent.prototype;
+
 		it('runs once on mount', () => {
-			expect(callbackWill).to.have.been.calledOnce();
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(1);
 		});
 
 		it('runs on mount with first parameter of component props', () => {
-			expect(callbackWill.firstCall).to.have.been.calledWith(component.instance().props);
+			const { props } = component.instance();
+			expect(componentWillMountOrReceiveProps).toHaveBeenNthCalledWith(1, props);
 		});
 
 		it('runs on mount with "this" context of component', () => {
-			expect(callbackWill.firstCall).to.have.been.calledOn(component.instance());
+			expect(componentWillMountOrReceiveProps).toHaveNthReturnedWith(1, component.instance());
 		});
 
 		it('runs on mount before render()', () => {
-			expect(callbackWill).to.have.been.calledBefore(callbackRender);
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledBefore(render);
 		});
 
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill).to.have.been.calledTwice();
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(2);
 		});
 
 		it('runs on props update when no props change', () => {
 			component.setProps(component.instance().props);
-			expect(callbackWill).to.have.been.calledTwice();
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(2);
 		});
 
 		it('runs on props update with first parameter of component props', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall).to.have.been.calledWith(component.instance().props);
+
+			const { props } = component.instance();
+			const context = {};
+			expect(componentWillMountOrReceiveProps).toHaveBeenNthCalledWith(2, props, context);
 		});
 
 		it('runs on props update with "this" context of component', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall).to.have.been.calledOn(component.instance());
+
+			expect(componentWillMountOrReceiveProps).toHaveNthReturnedWith(2, component.instance());
 		});
 
 		it('runs on props update before render()', () => {
+			jest.clearAllMocks();
 			component.setProps(getUniqueProps());
-			expect(callbackWill.secondCall).to.have.been.calledBefore(callbackRender.secondCall);
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledBefore(render);
 		});
 
 		it('does not run on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackWill).to.have.been.calledOnce();
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(1);
 		});
 	});
 
 	describe('componentDidMountOrUpdate()', () => {
+		const { componentDidMountOrUpdate, render } = TestComponent.prototype;
+
 		it('runs once when mounted', () => {
-			expect(callbackDid).to.have.been.calledOnce();
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(1);
 		});
 
-		it('runs on mount with first parameter of component props', () => {
-			expect(callbackDid.firstCall).to.have.been.calledWith(component.instance().props);
-		});
-
-		it('runs on mount with second parameter of component state', () => {
-			expect(callbackDid.firstCall).to.have.been.calledWith(sinon.match.any, component.state());
+		it('receives component props and component state on mount', () => {
+			expect(componentDidMountOrUpdate)
+				.toHaveBeenNthCalledWith(1, component.instance().props, component.state());
 		});
 
 		it('runs on mount with "this" context of component', () => {
-			expect(callbackDid.firstCall).to.have.been.calledOn(component.instance());
+			expect(componentDidMountOrUpdate).toHaveNthReturnedWith(1, component.instance());
 		});
 
 		it('runs after render()', () => {
-			expect(callbackDid).to.have.been.calledAfter(callbackRender);
+			expect(componentDidMountOrUpdate).toHaveBeenCalledAfter(render);
 		});
 
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackDid).to.have.been.calledTwice();
+
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(2);
 		});
 
-		it('runs on props update with first parameter of previous component props', () => {
+		it('receives previous component props and state on props update', () => {
 			const initialProps = component.instance().props;
-			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall).to.have.been.calledWith(initialProps);
-		});
-
-		it('runs on props update with second parameter of previous component state', () => {
 			const initialState = component.state();
 			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall).to.have.been.calledWith(sinon.match.any, initialState);
+
+			const context = hasContextParameter ? {} : undefined;
+			expect(componentDidMountOrUpdate)
+				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
 		});
 
 		it('runs on props update with "this" context of component', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall).to.have.been.calledOn(component.instance());
+
+			expect(componentDidMountOrUpdate).toHaveNthReturnedWith(2, component.instance());
 		});
 
 		it('runs on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid).to.have.been.calledTwice();
+
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(2);
 		});
 
-		it('runs on state update with first parameter of previous component props', () => {
+		it('receives previous component props and state on state update', () => {
 			const initialProps = component.instance().props;
-			component.setState(getUniqueState());
-			expect(callbackDid.secondCall).to.have.been.calledWith(initialProps);
-		});
-
-		it('runs on state update with second parameter of previous component state', () => {
 			const initialState = component.state();
 			component.setState(getUniqueState());
-			expect(callbackDid.secondCall).to.have.been.calledWith(sinon.match.any, initialState);
+
+			const context = hasContextParameter ? {} : undefined;
+			expect(componentDidMountOrUpdate)
+				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
 		});
 
 		it('runs on state update with "this" context of component', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid.secondCall).to.have.been.calledOn(component.instance());
+
+			expect(componentDidMountOrUpdate).toHaveNthReturnedWith(2, component.instance());
 		});
 
 		it('runs on props update before render()', () => {
+			jest.clearAllMocks();
 			component.setProps(getUniqueProps());
-			expect(callbackDid.secondCall).to.have.been.calledAfter(callbackRender.secondCall);
+
+			expect(componentDidMountOrUpdate).toHaveBeenCalledAfter(render);
 		});
 	});
 });
 
 descriptor('PureComponent extension with overrides calling super()', () => {
 	const { PureComponent } = require('.'); // eslint-disable-line global-require
+	let component;
 
-	const userComponentWillMountBefore = sandbox.spy();
-	const userComponentWillMountAfter = sandbox.spy();
-	const userComponentDidMountBefore = sandbox.spy();
-	const userComponentDidMountAfter = sandbox.spy();
-	const userComponentWillReceivePropsBefore = sandbox.spy();
-	const userComponentWillReceivePropsAfter = sandbox.spy();
-	const userComponentDidUpdateBefore = sandbox.spy();
-	const userComponentDidUpdateAfter = sandbox.spy();
+	const userComponentWillMountBefore = jest.fn();
+	const userComponentWillMountAfter = jest.fn();
+	const userComponentDidMountBefore = jest.fn();
+	const userComponentDidMountAfter = jest.fn();
+	const userComponentWillReceivePropsBefore = jest.fn();
+	const userComponentWillReceivePropsAfter = jest.fn();
+	const userComponentDidUpdateBefore = jest.fn();
+	const userComponentDidUpdateAfter = jest.fn();
 
 	class TestComponentWithSuper extends PureComponent {
 		componentWillMount() {
@@ -209,93 +214,93 @@ descriptor('PureComponent extension with overrides calling super()', () => {
 		}
 	}
 
-	const callbackWill = sandbox.spy(TestComponentWithSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponentWithSuper.prototype, 'componentDidMountOrUpdate');
+	TestComponentWithSuper.prototype.componentWillMountOrReceiveProps = jest.fn().mockReturnThis();
+	TestComponentWithSuper.prototype.componentDidMountOrUpdate = jest.fn().mockReturnThis();
 
 	beforeEach(() => {
 		component = shallow(<TestComponentWithSuper {...getUniqueProps()} />);
 	});
 
-	afterEach(() => sandbox.reset());
-
 	describe('componentWillMountOrReceiveProps()', () => {
+		const { componentWillMountOrReceiveProps } = TestComponentWithSuper.prototype;
+
 		it('runs once on mount', () => {
-			expect(callbackWill).to.have.been.calledOnce();
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(1);
 		});
 
 		it('runs user code in override on mount', () => {
-			sinon.assert.callOrder(
-				userComponentWillMountBefore,
-				callbackWill,
-				userComponentWillMountAfter,
-			);
+			expect(userComponentWillMountBefore).toHaveBeenCalledBefore(componentWillMountOrReceiveProps);
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledBefore(userComponentWillMountAfter);
 		});
 
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill).to.have.been.calledTwice();
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(2);
 		});
 
 		it('runs user code in override on props update', () => {
+			jest.clearAllMocks();
 			component.setProps(getUniqueProps());
-			sinon.assert.callOrder(
-				userComponentWillReceivePropsBefore,
-				callbackWill,
-				userComponentWillReceivePropsAfter,
-			);
+
+			expect(userComponentWillReceivePropsBefore)
+				.toHaveBeenCalledBefore(componentWillMountOrReceiveProps);
+			expect(componentWillMountOrReceiveProps)
+				.toHaveBeenCalledBefore(userComponentWillReceivePropsAfter);
 		});
 
 		it('does not run on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackWill).to.have.been.calledOnce();
+
+			expect(componentWillMountOrReceiveProps).toHaveBeenCalledTimes(1);
 		});
 	});
 
 	describe('componentDidMountOrUpdate()', () => {
+		const { componentDidMountOrUpdate } = TestComponentWithSuper.prototype;
+
 		it('runs once when mounted', () => {
-			expect(callbackDid).to.have.been.calledOnce();
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(1);
 		});
 
 		it('runs user code in override on mount', () => {
-			sinon.assert.callOrder(
-				userComponentDidMountBefore,
-				callbackDid,
-				userComponentDidMountAfter,
-			);
+			expect(userComponentDidMountBefore).toHaveBeenCalledBefore(componentDidMountOrUpdate);
+			expect(componentDidMountOrUpdate).toHaveBeenCalledBefore(userComponentDidMountAfter);
 		});
 
 		it('runs on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackDid).to.have.been.calledTwice();
+
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(2);
 		});
 
 		it('runs user code in override on props update', () => {
+			jest.clearAllMocks();
 			component.setProps(getUniqueProps());
-			sinon.assert.callOrder(
-				userComponentDidUpdateBefore,
-				callbackDid,
-				userComponentDidUpdateAfter,
-			);
+
+			expect(userComponentDidUpdateBefore).toHaveBeenCalledBefore(componentDidMountOrUpdate);
+			expect(componentDidMountOrUpdate).toHaveBeenCalledBefore(userComponentDidUpdateAfter);
 		});
 
 		it('runs on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid).to.have.been.calledTwice();
+
+			expect(componentDidMountOrUpdate).toHaveBeenCalledTimes(2);
 		});
 
 		it('runs user code in override on state update', () => {
+			jest.clearAllMocks();
 			component.setState(getUniqueState());
-			sinon.assert.callOrder(
-				userComponentDidUpdateBefore,
-				callbackDid,
-				userComponentDidUpdateAfter,
-			);
+
+			expect(userComponentDidUpdateBefore).toHaveBeenCalledBefore(componentDidMountOrUpdate);
+			expect(componentDidMountOrUpdate).toHaveBeenCalledBefore(userComponentDidUpdateAfter);
 		});
 	});
 });
 
-descriptor('Component extension with overrides not calling super()', () => {
+descriptor('PureComponent extension with overrides not calling super()', () => {
 	const { PureComponent } = require('.'); // eslint-disable-line global-require
+	let component;
 
 	class TestComponentWithoutSuper extends PureComponent {
 		componentWillMount() { }
@@ -311,44 +316,50 @@ descriptor('Component extension with overrides not calling super()', () => {
 		}
 	}
 
-	const callbackWill = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentWillMountOrReceiveProps');
-	const callbackDid = sandbox.spy(TestComponentWithoutSuper.prototype, 'componentDidMountOrUpdate');
+	TestComponentWithoutSuper.prototype.componentWillMountOrReceiveProps = jest.fn().mockReturnThis();
+	TestComponentWithoutSuper.prototype.componentDidMountOrUpdate = jest.fn().mockReturnThis();
 
 	beforeEach(() => {
 		component = shallow(<TestComponentWithoutSuper {...getUniqueProps()} />);
 	});
 
-	afterEach(() => sandbox.reset());
-
 	describe('componentWillMountOrReceiveProps()', () => {
+		const { componentWillMountOrReceiveProps } = TestComponentWithoutSuper.prototype;
+
 		it('does not run on mount', () => {
-			expect(callbackWill).not.to.have.been.called();
+			expect(componentWillMountOrReceiveProps).not.toHaveBeenCalled();
 		});
 
 		it('does not run on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackWill).not.to.have.been.called();
+
+			expect(componentWillMountOrReceiveProps).not.toHaveBeenCalled();
 		});
 
 		it('does not run on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackWill).not.to.have.been.called();
+
+			expect(componentWillMountOrReceiveProps).not.toHaveBeenCalled();
 		});
 	});
 
 	describe('componentDidMountOrUpdate()', () => {
+		const { componentDidMountOrUpdate } = TestComponentWithoutSuper.prototype;
+
 		it('does not run when mounted', () => {
-			expect(callbackDid).not.to.have.been.called();
+			expect(componentDidMountOrUpdate).not.toHaveBeenCalled();
 		});
 
 		it('does not run on props update', () => {
 			component.setProps(getUniqueProps());
-			expect(callbackDid).not.to.have.been.called();
+
+			expect(componentDidMountOrUpdate).not.toHaveBeenCalled();
 		});
 
 		it('does not run on state update', () => {
 			component.setState(getUniqueState());
-			expect(callbackDid).not.to.have.been.called();
+
+			expect(componentDidMountOrUpdate).not.toHaveBeenCalled();
 		});
 	});
 });

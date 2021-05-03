@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars, class-methods-use-this */
-import { PureComponent } from 'react';
+import { Component, PureComponent } from 'react';
 
-class ReactPureComponentUpdate extends PureComponent {
+// Fallback to Component if the current version of React lacks PureComponent
+const BaseClass = PureComponent || Component;
+
+class ReactPureComponentUpdate extends BaseClass {
 	componentWillMount() {
 		this.componentWillMountOrReceiveProps(this.props);
 	}
@@ -10,17 +13,19 @@ class ReactPureComponentUpdate extends PureComponent {
 		this.componentDidMountOrUpdate(this.props, this.state);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.componentWillMountOrReceiveProps(nextProps);
+	componentWillReceiveProps(nextProps, maybeContext) {
+		this.componentWillMountOrReceiveProps(nextProps, maybeContext);
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		this.componentDidMountOrUpdate(prevProps, prevState);
+	componentDidUpdate(prevProps, prevState, maybeContext) {
+		this.componentDidMountOrUpdate(prevProps, prevState, maybeContext);
 	}
 
-	componentWillMountOrReceiveProps(nextProps) {}
+	/* istanbul ignore next */
+	componentWillMountOrReceiveProps(nextProps, maybeContext) { }
 
-	componentDidMountOrUpdate(prevProps, prevState) {}
+	/* istanbul ignore next */
+	componentDidMountOrUpdate(prevProps, prevState, maybeContext) { }
 }
 
 export default ReactPureComponentUpdate;
