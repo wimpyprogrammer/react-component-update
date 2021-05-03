@@ -14,6 +14,10 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
+// In React <16, context is an undocumented parameter that React passes to
+// componentWillReceiveProps() and componentDidUpdate()
+const hasContextParameter = React.version.split('.')[0] < 16;
+
 describe('Component extension', () => {
 	let component;
 
@@ -67,7 +71,8 @@ describe('Component extension', () => {
 			component.setProps(getUniqueProps());
 			const { props } = component.instance();
 
-			expect(componentWillMountOrReceiveProps).toHaveBeenNthCalledWith(2, props);
+			const context = {};
+			expect(componentWillMountOrReceiveProps).toHaveBeenNthCalledWith(2, props, context);
 		});
 
 		it('runs on props update with "this" context of component', () => {
@@ -127,7 +132,9 @@ describe('Component extension', () => {
 			const initialState = component.state();
 			component.setProps(getUniqueProps());
 
-			expect(componentDidMountOrUpdate).toHaveBeenNthCalledWith(2, initialProps, initialState);
+			const context = hasContextParameter ? {} : undefined;
+			expect(componentDidMountOrUpdate)
+				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
 		});
 
 		it('runs on props update with "this" context of component', () => {
@@ -153,7 +160,9 @@ describe('Component extension', () => {
 			const initialState = component.state();
 			component.setState(getUniqueState());
 
-			expect(componentDidMountOrUpdate).toHaveBeenNthCalledWith(2, initialProps, initialState);
+			const context = hasContextParameter ? {} : undefined;
+			expect(componentDidMountOrUpdate)
+				.toHaveBeenNthCalledWith(2, initialProps, initialState, context);
 		});
 
 		it('runs on state update with "this" context of component', () => {

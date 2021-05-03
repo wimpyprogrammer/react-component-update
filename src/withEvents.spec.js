@@ -15,7 +15,8 @@ function getUniqueProps() {
 	return { [uniqueId('propName')]: uniqueId('propValue') };
 }
 
-// In React <16, context is an undocumented parameter passed to componentWillReceiveProps()
+// In React <16, context is an undocumented parameter that React passes to
+// componentWillReceiveProps() and componentDidUpdate()
 const hasContextParameter = React.version.split('.')[0] < 16;
 
 describe('withEvents extension', () => {

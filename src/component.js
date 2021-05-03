@@ -10,17 +10,17 @@ class ReactComponentUpdate extends Component {
 		this.componentDidMountOrUpdate(this.props, this.state);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.componentWillMountOrReceiveProps(nextProps);
+	componentWillReceiveProps(nextProps, maybeContext) {
+		this.componentWillMountOrReceiveProps(nextProps, maybeContext);
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		this.componentDidMountOrUpdate(prevProps, prevState);
+	componentDidUpdate(prevProps, prevState, maybeContext) {
+		this.componentDidMountOrUpdate(prevProps, prevState, maybeContext);
 	}
 
-	componentWillMountOrReceiveProps(nextProps) {}
+	componentWillMountOrReceiveProps(nextProps, maybeContext) { }
 
-	componentDidMountOrUpdate(prevProps, prevState) {}
+	componentDidMountOrUpdate(prevProps, prevState, maybeContext) { }
 }
 
 export default ReactComponentUpdate;
