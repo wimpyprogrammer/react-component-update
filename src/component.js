@@ -18,8 +18,10 @@ class ReactComponentUpdate extends Component {
 		this.componentDidMountOrUpdate(prevProps, prevState, maybeContext);
 	}
 
+	/* istanbul ignore next */
 	componentWillMountOrReceiveProps(nextProps, maybeContext) { }
 
+	/* istanbul ignore next */
 	componentDidMountOrUpdate(prevProps, prevState, maybeContext) { }
 }
 
