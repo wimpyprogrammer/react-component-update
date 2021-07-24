@@ -42,7 +42,7 @@ jobs:
       - run: npx testpack-cli --keep=@babel/*,create-react-class,enzyme*,jest*,react* .babelrc jest.config.js test-*.js src/*.spec.js
 
       - name: Upload test coverage report to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.0.2
         with:
           fail_ci_if_error: false
 
