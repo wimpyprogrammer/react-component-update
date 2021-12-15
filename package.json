@@ -11,11 +11,9 @@
   },
   "scripts": {
     "build": "babel src --out-dir lib --delete-dir-on-start",
-    "build-and-test": "npm run test && npm run build",
     "lint": "eslint ./ --report-unused-disable-directives",
-    "test": "jest",
-    "prepublish": "npx publish-please guard",
-    "publish-please": "npx publish-please"
+    "release": "npx release-it --no-increment",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
