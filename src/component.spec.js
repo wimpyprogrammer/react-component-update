@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { Component } from '.'; // eslint-disable-line import/named
+import { Component } from '.';
 
 let counter = 0;
 const uniqueId = (prefix) => prefix + counter++;
