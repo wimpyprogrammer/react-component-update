@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [10.x, 14.x]
+        node-version: [12.x, 16.x, lts/*]
         react-version: [0.13, 0.14, 15, 16]
 
     steps:
@@ -35,6 +35,7 @@ jobs:
       - run: npm install
       - run: npx enzyme-adapter-react-install 16
         env:
+          NPM_CONFIG_LEGACY_PEER_DEPS: true
           REACT: ${{ matrix.react-version }}
       - run: npm run lint
       - run: npm run build

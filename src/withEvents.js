@@ -5,7 +5,7 @@ function noop() {}
  * @param {function=} nativeFunc
  * @param {function} customWrapperFunc
  */
-function wrap(nativeFunc = noop, customWrapperFunc) {
+function wrap(customWrapperFunc, nativeFunc = noop) {
 	return function wrappedNativeFunc(...args) {
 		customWrapperFunc.call(this, nativeFunc.bind(this), ...args);
 	};
@@ -40,9 +40,9 @@ export default function withEvents(config) {
 		componentWillMountOrReceiveProps: noop,
 		componentDidMountOrUpdate: noop,
 		...config,
-		componentWillMount: wrap(config.componentWillMount, willMountCustom),
-		componentDidMount: wrap(config.componentDidMount, didMountCustom),
-		componentWillReceiveProps: wrap(config.componentWillReceiveProps, willReceivePropsCustom),
-		componentDidUpdate: wrap(config.componentDidUpdate, didUpdateCustom),
+		componentWillMount: wrap(willMountCustom, config.componentWillMount),
+		componentDidMount: wrap(didMountCustom, config.componentDidMount),
+		componentWillReceiveProps: wrap(willReceivePropsCustom, config.componentWillReceiveProps),
+		componentDidUpdate: wrap(didUpdateCustom, config.componentDidUpdate),
 	};
 }
