@@ -43,11 +43,11 @@
     "eslint-plugin-react": "^7.27.1",
     "jest": "^27.0.3",
     "jest-extended": "^0.11.5",
-    "react": "*",
-    "react-dom": "*",
+    "react": "<17",
+    "react-dom": "<17",
     "react-test-renderer": "*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "<17"
   }
 }
