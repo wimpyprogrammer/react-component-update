@@ -32,8 +32,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npm config ls -l
-
       - run: npm install
       - run: npx enzyme-adapter-react-install 16
         env:
