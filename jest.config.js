@@ -7,7 +7,7 @@ module.exports = {
 	setupFilesAfterEnv: [
 		'<rootDir>/test-shims.js',
 		'<rootDir>/test-setup.js',
-		'jest-extended',
+		'jest-extended/all',
 	],
 	testEnvironment: 'node',
 	testMatch: [
