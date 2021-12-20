@@ -1,6 +1,6 @@
-import Component from './component';
-import PureComponent from './pureComponent';
-import withEvents from './withEvents';
+const { default: Component } = require('./component');
+const { default: PureComponent } = require('./pureComponent');
+const { default: withEvents } = require('./withEvents');
 
 module.exports = {
 	Component,

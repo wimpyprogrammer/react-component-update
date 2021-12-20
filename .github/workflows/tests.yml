@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # 07:34 on Saturdays
+    - cron: "34 7 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [12.x, 16.x, lts/*]
+        react-version: [0.13, 0.14, 15, 16]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "2"
+
+      - name: Test on Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install
+      - run: npx enzyme-adapter-react-install 16
+        env:
+          NPM_CONFIG_LEGACY_PEER_DEPS: true
+          REACT: ${{ matrix.react-version }}
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test
+      - run: npx testpack-cli --keep=@babel/*,create-react-class,enzyme*,jest*,react* .babelrc jest.config.js test-*.js src/*.spec.js
+
+      - name: Upload test coverage report to Codecov
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          fail_ci_if_error: false
+
+      - name: Run Snyk to check for vulnerabilities
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
