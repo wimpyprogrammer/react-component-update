@@ -45,7 +45,9 @@ jobs:
       - name: Upload test coverage report to Codecov
         uses: codecov/codecov-action@v4.1.0
         with:
-          fail_ci_if_error: false
+          fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run Snyk to check for vulnerabilities
         if: ${{ github.actor != 'dependabot[bot]' }}
